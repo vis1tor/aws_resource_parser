@@ -1,0 +1,5 @@
+*.txt
+*.swp
+*.xlsx
+aws_services/__pycache__
+conf/__pycache__
