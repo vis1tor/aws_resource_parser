@@ -7,7 +7,7 @@ AWS_SESSION_TOKEN="" # 생략 가능
 region = 'ap-northeast-2'
 
 # Output 파일명 설정(ex) ./output/aws_service.xlsx)
-output_file_name = 'aws_service.xlsx'
+output_file_name = 'aws_service.xlsx' 
 
 # AWS 서비스 수집 여부 설정(아래 목록만 현재 수집 가능함)
 aws_services = {
