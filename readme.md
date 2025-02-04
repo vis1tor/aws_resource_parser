@@ -23,6 +23,7 @@
 5. main.py 스크립트 실행
     -   python main.py
 
+
 # 참고
     - AttributeError: module 'win32com.gen_py.00020813-0000-0000-C000-000000000046x0x1x9' has no attribute 'CLSIDToClassMap' 에러 발생 시
         해결 방법 => C:\Users\<your username>\AppData\Local\Temp\gen_py 디렉토리 제거
