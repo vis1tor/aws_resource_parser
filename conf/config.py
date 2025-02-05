@@ -17,23 +17,24 @@ aws_services = {
     # 'elb' : 'on', # gatewaylb 작업 추가 필요
     # 'eks' : 'on',
     # 'ecr' : 'on',
-    # # # 초랭이
+    'lambda' : 'on',
+    # 초랭이
     # 's3' : 'on',
     # 'efs' : 'on',
-    # # # 파랭이
+    # 파랭이
     # 'rds' : 'on', # 클러스터 조회 업데이트 추후 필요
     # 'redis': 'on',
     # 'codecommit' : 'on',
     # 'codebuild' : 'on', # 추후 업데이트 필요
-    # # # 보랭이
+    # 보랭이
     # 'vpc': 'on',
     # 'subnet': 'on',
     # 'route_table': 'on',
     # 'vpce' : 'on', # Gateway 방식 추후 업데이트 필요
     # 'route53' : 'on',
-    # # # 분홍이
+    # 분홍이
     # 'cw_logs' : 'on', # CloudWatch Logs
     # 'sns' : 'on'
-    # # 빨강이
-    'acm' : 'on'
+    # 빨강이
+    # 'acm' : 'on'
 }

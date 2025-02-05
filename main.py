@@ -3,7 +3,7 @@ import boto3
 from openpyxl import Workbook
 from conf.config import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, REGION, OUTPUT_FILE_NAME, aws_services
 from aws_services import boto3_client
-from aws_services import ec2, sg, elb, eks, ecr
+from aws_services import ec2, sg, elb, eks, ecr, lambda_func
 from aws_services import s3, efs
 from aws_services import rds, redis, codecommit, codebuild
 from aws_services import vpc, subnet, route_table, vpce, route53
@@ -44,6 +44,10 @@ def main():
         private_ecr_client = boto3_client.get_aws_client('ecr', AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, REGION)
         public_ecr_client = boto3_client.get_aws_client('ecr-public', AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, 'us-east-1') # public ecr 리전은 반드시 us-east-1
         ecr.export_ecr_info_to_excel(workbook, private_ecr_client, public_ecr_client)
+    # Lambda 정보 조회 및 엑셀 파일 생성
+    if aws_services.get('lambda') == 'on':
+        lambda_client = boto3_client.get_aws_client('lambda', AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, REGION)
+        lambda_func.export_lambda_info_to_excel(workbook, lambda_client, ec2_client)
     ###################
     # 초랭이 서비스
     ###################

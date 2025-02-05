@@ -31,7 +31,7 @@ def name_tag_info(service_tags):
                 service_tag = tag['Value']
     return service_tag
 
-# Tag 변환
+# List Tag 변환
 def tag_info(service_tags):
     service_tag_list = []
     if len(service_tags) == 0:
@@ -39,6 +39,19 @@ def tag_info(service_tags):
     else:
         for tag in service_tags:
             service_tag_list.append(f"{tag['Key']} : {tag['Value']}")
+
+        service_tag_list = '\n'.join(service_tag_list)
+
+    return  service_tag_list
+
+# Dictionary Tag 변환
+def dic_tag_info(service_tags):
+    service_tag_list = []
+    if len(service_tags) == 0:
+        service_tag_list = '-'
+    else:
+        for key, value in service_tags.items():
+            service_tag_list.append(f"{key} : {value}")
 
         service_tag_list = '\n'.join(service_tag_list)
 
