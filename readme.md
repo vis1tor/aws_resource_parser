@@ -24,6 +24,10 @@
     -   python main.py
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0af2e9b1a3cc5e50018cafee1b6ecc16f385a183
 =======
 
 >>>>>>> 0af2e9b1a3cc5e50018cafee1b6ecc16f385a183

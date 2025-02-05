@@ -8,7 +8,10 @@ from aws_services import s3, efs
 from aws_services import rds, redis, codecommit, codebuild
 from aws_services import vpc, subnet, route_table, vpce, route53
 from aws_services import cw_logs, sns
+<<<<<<< HEAD
 from aws_services import acm
+=======
+>>>>>>> 0af2e9b1a3cc5e50018cafee1b6ecc16f385a183
 
 def main():
     output_dir = 'output'
@@ -104,6 +107,7 @@ def main():
     if aws_services.get('sns') == 'on':
         sns_client = boto3_client.get_aws_client('sns', AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, REGION)
         sns.export_sns_info_to_excel(workbook, sns_client)
+<<<<<<< HEAD
     ###################
     # 빨강이 서비스
     ###################
@@ -112,6 +116,9 @@ def main():
         acm_client = boto3_client.get_aws_client('acm', AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN, REGION)
         acm.export_acm_info_to_excel(workbook, acm_client)
 
+=======
+    
+>>>>>>> 0af2e9b1a3cc5e50018cafee1b6ecc16f385a183
     # 엑셀 시트별 열 크기 자동 조절
     for worksheet in workbook.worksheets:
         for col in worksheet.columns:
