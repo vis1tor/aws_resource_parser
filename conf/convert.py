@@ -41,7 +41,6 @@ def tag_info(service_tags):
             service_tag_list.append(f"{tag['Key']} : {tag['Value']}")
 
         service_tag_list = '\n'.join(service_tag_list)
-
     return  service_tag_list
 
 # Dictionary Tag 변환
@@ -54,7 +53,6 @@ def dic_tag_info(service_tags):
             service_tag_list.append(f"{key} : {value}")
 
         service_tag_list = '\n'.join(service_tag_list)
-
     return  service_tag_list
 
 # VPC 변환
@@ -80,7 +78,6 @@ def sg_info(ec2_client, sg_id):
             sg_id
         ]
     )
-    
     return response['SecurityGroups'][0]['GroupName']
 
 # 서브넷 변환

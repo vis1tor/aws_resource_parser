@@ -1,5 +1,6 @@
 *.txt
 *.swp
 *.xlsx
+*.zip
 aws_services/__pycache__
 conf/__pycache__
