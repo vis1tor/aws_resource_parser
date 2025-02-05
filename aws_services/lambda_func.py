@@ -16,7 +16,7 @@ def get_lambda_function_info(lambda_client, lambda_name):
     lambda_log_group = response['Configuration']['LoggingConfig']['LogGroup']
     lambda_descrition = response['Configuration']['Description']
 
-    # Lambda Tag는 딕셔너리 형태 
+    # Lambda Tag는 딕셔너리 형태
     try:
         lambda_tag = convert.dic_tag_info(response['Tags'])
     except:
