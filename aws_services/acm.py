@@ -2,6 +2,21 @@ from botocore.exceptions import ClientError
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
+def get_certificate_info(acm_client, acm_arn):
+    response = acm_client.describe_certificate(CertificateArn=acm_arn)
+    KeyAlgorithm
+    CertificateArn
+    Issuer
+    Type
+    
+    return 
+
+def get_certificate_tag(acm_client, acm_arn)
+    response = acm_client.list_tags_for_certificate(CertificateArn=acm_arn)
+    acm_tag = convert.tag_info(response['Tags'])
+    
+    return acm_tag
+
 def export_acm_info_to_excel(workbook, acm_client):
 #====================================== ACM Section ======================================
     # ACM 목록 조회
@@ -16,9 +31,9 @@ def export_acm_info_to_excel(workbook, acm_client):
 
     acm_headers = [
         # acm 기본 정보
-        'ACM Name', 'ACM Type', 'ACM Algorithm'
+        'ACM Name', 'ACM Type', 'ACM Algorithm',
         # ACM 태그 정보
-        'Tags',
+        'Domain',
     ]
 
     for col_num, header in enumerate(acm_headers,1):
@@ -35,42 +50,19 @@ def export_acm_info_to_excel(workbook, acm_client):
 
     # ACM 정보 조회
     for acm in acm_info['CertificateSummaryList']:
-        acm_name = acm['DomainName']
-        acm_type = acm['Type']
-        acm_algorithm = acm['KeyAlgorithm']
-        acm_domain = acm['SubjectAlternativeNameSummaries']
-        # acm_name = convert.name_tag_info(acm['Tags'])
-    #     acm_id = acm['acmId']
-        # vpc_main_cidr = vpc['CidrBlock']
-        
-        # # VPC 보조 IP 조회
-        # vpc_sub_cidr_list = []
-        # try:
-        #     for index in range(1, len(vpc['CidrBlockAssociationSet'])): # sub_cidr 길이 만큼 반복
-        #         vpc_sub_cidr_list.append(vpc['CidrBlockAssociationSet'][index]['CidrBlock'])
-        # except:
-        #     pass
-        # vpc_sub_cidr_list.sort()
-        # if len(vpc_sub_cidr_list) > 0 :
-        #     vpc_sub_cidr = '\n'.join(vpc_sub_cidr_list)
-        # else:
-        #     vpc_sub_cidr = '-'
-        
-        # vpc_tags = convert.tag_info(vpc['Tags'])
-        
-        # vpc_dns_support_option, vpc_dns_hostname_option, vpc_dns_networkmetric_option = get_vpc_attribute_info(ec2_client, vpc_id)
-        # vpc_flow_log_name, vpc_flow_log_type, vpc_flow_log_dst = get_vpc_flow_info(ec2_client, vpc_id)
+        acm_arn = acm['CertificateArn']
+        acm_domain, acm_sub_domain, = get_certificate_info(acm_client, acm_arn)
+        # acm_name = acm['DomainName']
+        # acm_type = acm['Type']
+        # acm_algorithm = acm['KeyAlgorithm']
+        # acm_domain = '\n'.join(acm['SubjectAlternativeNameSummaries'])
+
+
+
 
         # variables = [
         #     # VPC 기본 정보
-        #     vpc_name, vpc_id, vpc_main_cidr, vpc_sub_cidr,
-        #     # VPC 태그 정보
-        #     vpc_tags,
-        #     # VPC 속성 정보
-        #     vpc_dns_support_option, vpc_dns_hostname_option, vpc_dns_networkmetric_option,
-        #     # VPC Flow Log 정보
-        #     vpc_flow_log_name, vpc_flow_log_type, vpc_flow_log_dst
-
+        #     acm_name, acm_type, acm_algorithm, acm_domain,
         # ]
 
         # worksheet.append(variables)

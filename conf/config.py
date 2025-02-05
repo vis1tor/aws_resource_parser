@@ -1,16 +1,6 @@
 # AWS 액세스 키 및 시크릿 키 설정
-<<<<<<< HEAD
-<<<<<<< HEAD
 AWS_ACCESS_KEY_ID=""
 AWS_SECRET_ACCESS_KEY=""
-=======
-AWS_ACCESS_KEY_ID=""
-AWS_SECRET_ACCESS_KEY=""
->>>>>>> 0af2e9b1a3cc5e50018cafee1b6ecc16f385a183
-=======
-AWS_ACCESS_KEY_ID=""
-AWS_SECRET_ACCESS_KEY=""
->>>>>>> 0af2e9b1a3cc5e50018cafee1b6ecc16f385a183
 AWS_SESSION_TOKEN="" # 생략 가능 
 
 # AWS 리전 설정
@@ -38,26 +28,12 @@ aws_services = {
     # # # 보랭이
     # 'vpc': 'on',
     # 'subnet': 'on',
-<<<<<<< HEAD
-<<<<<<< HEAD
     # 'route_table': 'on',
-=======
-    'route_table': 'on',
->>>>>>> 0af2e9b1a3cc5e50018cafee1b6ecc16f385a183
-=======
-    'route_table': 'on',
->>>>>>> 0af2e9b1a3cc5e50018cafee1b6ecc16f385a183
     # 'vpce' : 'on', # Gateway 방식 추후 업데이트 필요
     # 'route53' : 'on',
     # # # 분홍이
     # 'cw_logs' : 'on', # CloudWatch Logs
     # 'sns' : 'on'
-<<<<<<< HEAD
-<<<<<<< HEAD
     # # 빨강이
     'acm' : 'on'
-=======
->>>>>>> 0af2e9b1a3cc5e50018cafee1b6ecc16f385a183
-=======
->>>>>>> 0af2e9b1a3cc5e50018cafee1b6ecc16f385a183
 }
