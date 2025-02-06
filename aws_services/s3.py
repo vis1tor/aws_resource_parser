@@ -4,6 +4,7 @@
 
 # 2023-12 수명주기 여러 개일 때 내용 반영 수정 중...
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
 def get_bucket_tags(s3_client, bucket_name):
@@ -276,7 +277,7 @@ def export_s3_info_to_excel(workbook, s3_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(s3_headers))}{header_row}"
 
     # S3 정보를 엑셀에 쓰기
-    for bucket in s3_info['Buckets']:
+    for bucket in tqdm(s3_info['Buckets'], desc="S3  정보 파싱 중..."):
         bucket_name = bucket['Name']
         bucket_enc_type, bucket_enc_key = get_bucket_enc(s3_client, bucket_name)
         bucket_tags = get_bucket_tags(s3_client, bucket_name)

@@ -12,29 +12,29 @@ OUTPUT_FILE_NAME = 'aws_service.xlsx'
 # AWS 서비스 수집 여부 설정(아래 목록만 현재 수집 가능함)
 aws_services = {
     # 주랭이
-    'ec2' : 'on',
-    'sg' : 'on', # Security Groups
-    'elb' : 'on', # gatewaylb 작업 추가 필요
-    'eks' : 'on',
+    # 'ec2' : 'on',
+    # 'sg' : 'on', # Security Groups
+    # 'elb' : 'on', # gatewaylb 작업 추가 필요
+    # 'eks' : 'on',
     'ecr' : 'on',
-    'lambda' : 'on',
+    # 'lambda' : 'on',
     # 초랭이
-    's3' : 'on',
-    'efs' : 'on',
+    # 's3' : 'on',
+    # 'efs' : 'on',
     # 파랭이
-    'rds' : 'on', # 클러스터 조회 업데이트 추후 필요
-    'redis': 'on',
-    'codecommit' : 'on',
-    'codebuild' : 'on', # 추후 업데이트 필요
+    # 'rds' : 'on', # 클러스터 조회 업데이트 추후 필요
+    # 'redis': 'on',
+    # 'codecommit' : 'on',
+    # 'codebuild' : 'on', # 추후 업데이트 필요
     # 보랭이
-    'vpc': 'on',
-    'subnet': 'on',
-    'route_table': 'on',
-    'vpce' : 'on', # Gateway 방식 추후 업데이트 필요
-    'route53' : 'on',
+    # 'vpc': 'on',
+    # 'subnet': 'on',
+    # 'route_table': 'on',
+    # 'vpce' : 'on', # Gateway 방식 추후 업데이트 필요
+    # 'route53' : 'on',
     # 분홍이
-    'cw_logs' : 'on', # CloudWatch Logs
-    'sns' : 'on',
+    # 'cw_logs' : 'on', # CloudWatch Logs
+    # 'sns' : 'on',
     # 빨강이
-    'acm' : 'on'
+    # 'acm' : 'on'
 }

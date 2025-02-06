@@ -1,4 +1,5 @@
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
+from tqdm import tqdm
 
 def get_repository_tag(codecommit_client, repository_arn):
     response = codecommit_client.list_tags_for_resource(resourceArn=repository_arn)
@@ -58,7 +59,7 @@ def export_codecommit_info_to_excel(workbook, codecommit_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(codecommit_headers))}{header_row}"
 
     # Private CodeCommit 정보를 엑셀에 쓰기
-    for repo in codecommit_info['repositories']:
+    for repo in tqdm(codecommit_info['repositories'], desc="CodeCommit 정보 파싱 중..."):
         repository_name = repo['repositoryName']
         repository_id, repository_http_url, repository_arn, repository_enc_key, repository_description = get_repository(codecommit_client, repository_name)
         repository_tag = get_repository_tag(codecommit_client, repository_arn)

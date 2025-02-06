@@ -1,5 +1,6 @@
 # 시작 템플릿 추가 필요
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -165,7 +166,7 @@ def export_eks_info_to_excel(workbook, eks_client, ec2_client):
     # auto_filter 적용
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(eks_headers))}{header_row}"
 
-    for cluster in eks_list['clusters']:
+    for cluster in tqdm(eks_list['clusters'], desc="EKS 정보 파싱 중..."):
         eks_info = eks_client.describe_cluster(name=cluster)
 
         cluster_name = eks_info['cluster']['name']
@@ -343,11 +344,11 @@ def export_eks_info_to_excel(workbook, eks_client, ec2_client):
         worksheet.cell(max_row+1, col_num, value=header).alignment = header_alignment
         worksheet.cell(max_row+1, col_num, value=header).border = header_border
 
-    # Node Group 정보를 엑셀에 쓰기
-    # 노드 그룹 목록 조회를 위한 클러스터 반복
+    # Launch Template 정보를 엑셀에 쓰기
+    # Launch Template 목록 조회를 위한 클러스터 반복
     for cluster in eks_list['clusters']:
         ng_list = eks_client.list_nodegroups(clusterName=cluster)
-        # 노드 그룹 조회를 위한 노드 그룹 반복
+        # Launch Template 목록 조회를 위한 노드 그룹 반복
         for ng in ng_list['nodegroups']:
             ng_info = eks_client.describe_nodegroup(clusterName=cluster,nodegroupName=ng)
 

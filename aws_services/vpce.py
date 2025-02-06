@@ -1,5 +1,6 @@
 # 시작 템플릿 추가 필요
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -37,7 +38,7 @@ def export_vpce_info_to_excel(workbook, ec2_client):
     # auto_filter 적용
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(vpce_headers))}{header_row}"
 
-    for vpce in vpce_info['VpcEndpoints']:
+    for vpce in tqdm(vpce_info['VpcEndpoints'], desc="VPCE 정보 파싱 중..."):
         
         vpce_name = convert.name_tag_info(vpce['Tags'])
         vpce_id = vpce['VpcEndpointId']

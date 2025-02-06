@@ -1,5 +1,6 @@
 # 프로토콜 정의 : https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -93,7 +94,7 @@ def export_sg_info_to_excel(workbook, ec2_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(sg_headers))}{header_row}"
 
     #보안그룹 수만큼 반복
-    for sg in sg_info['SecurityGroups']:
+    for sg in tqdm(sg_info['SecurityGroups'], desc="S G 정보 파싱 중..."):
         sg_name = sg['GroupName']
         sg_id = sg['GroupId']
         sg_vpc = convert.vpc_info(ec2_client, sg['VpcId'])

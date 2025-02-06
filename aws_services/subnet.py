@@ -1,5 +1,6 @@
 # 시작 템플릿 추가 필요
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -37,7 +38,7 @@ def export_subnet_info_to_excel(workbook, ec2_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(subnet_headers))}{header_row}"
 
     # Subnet 정보 조회
-    for subnet in subnet_info['Subnets']:
+    for subnet in tqdm(subnet_info['Subnets'], desc="Subnet 정보 파싱 중..."):
         subnet_az = subnet['AvailabilityZone']
         subnet_cidr = subnet['CidrBlock']
         subnet_vpc = convert.vpc_info(ec2_client, subnet['VpcId'])

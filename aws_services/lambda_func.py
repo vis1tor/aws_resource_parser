@@ -1,4 +1,5 @@
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -58,7 +59,7 @@ def export_lambda_info_to_excel(workbook, lambda_client, ec2_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(lambda_headers))}{header_row}"
 
     # Lambda 정보 조회
-    for lambda_func in lambda_info['Functions']:
+    for lambda_func in tqdm(lambda_info['Functions'], desc="LAMBDA 정보 파싱 중..."):
         lambda_name = lambda_func['FunctionName']
 
         lambda_role, lambda_runtime, lambda_arch, lambda_handler, lambda_timeout, lambda_mem_size, lambda_log_format, lambda_log_group, lambda_descrition, lambda_tag = get_lambda_function_info(lambda_client, lambda_name)

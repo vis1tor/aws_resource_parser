@@ -1,4 +1,5 @@
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
+from tqdm import tqdm
 
 def get_codebuild_tag(codebuild_tags):
     # Tag 존재 여부 확인
@@ -42,7 +43,7 @@ def export_codebuild_info_to_excel(workbook, codebuild_client):
         codebuild_info = codebuild_client.batch_get_projects(names=codebuild_project_list['projects'])
 
         # Private CodeBuild 정보를 엑셀에 쓰기
-        for codebuild in codebuild_info['projects']:
+        for codebuild in tqdm(codebuild_info['projects'], desc="CodeBuild 정보 파싱 중..."):
             codebuild_name = codebuild['name']
             codebuild_tag = get_codebuild_tag(codebuild['tags'])
             

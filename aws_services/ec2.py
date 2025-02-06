@@ -1,24 +1,7 @@
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
-
-# 태그 정보 정리
-def get_ec2_tags(ec2_tags):
-    ec2_tag_list = []
-    
-    # EC2 태그 미존재 시 예외 처리
-    if len(ec2_tags) == 0:
-        ec2_tag_list = '-'
-    else:
-        for tag in ec2_tags:
-            ec2_tag_list.append(f"{tag['Key']} : {tag['Value']}")
-            
-            if tag['Key'] == 'Name':
-                ec2_name = tag['Value']
-
-        ec2_tag_list = '\n'.join(ec2_tag_list)
-
-    return ec2_name, ec2_tag_list
 
 # 볼륨 정보 정리
 def get_ec2_vol_info(ec2_client, ec2_vol_id, ec2_root_device_name):
@@ -116,9 +99,10 @@ def export_ec2_info_to_excel(workbook, ec2_client):
     # auto_filter 적용
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(ec2_headers))}{header_row}"
 
-    for ec2_list in ec2_info['Reservations']:
+    for ec2_list in tqdm(ec2_info['Reservations'], desc="EC2 정보 파싱 중..."):
         for ec2 in ec2_list['Instances']:
-            ec2_name, ec2_tags = get_ec2_tags(ec2['Tags'])
+            ec2_name = convert.name_tag_info(ec2['Tags'])
+            ec2_tags = convert.tag_info(ec2['Tags'])
             ec2_instance_id = ec2['InstanceId']
             
             # AMI 정보

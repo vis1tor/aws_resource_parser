@@ -1,5 +1,6 @@
 # 개선 : 수명주기 관리, DNS 이름
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -82,7 +83,7 @@ def export_efs_info_to_excel(workbook, efs_client, ec2_client):
     # auto_filter 적용
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(efs_headers))}{header_row}"
 
-    for efs in efs_info['FileSystems']:
+    for efs in tqdm(efs_info['FileSystems'], desc="EFS 정보 파싱 중..."):
         efs_name = efs['Name']
         efs_id = efs['FileSystemId']
         efs_throughputmode = efs['ThroughputMode']

@@ -1,21 +1,14 @@
 from botocore.exceptions import ClientError
+from conf import convert
+from tqdm import tqdm
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
 def get_lg_tag(cw_logs_client, cw_lg_name):
     response = cw_logs_client.list_tags_log_group(logGroupName=cw_lg_name)
     
-    # Tag 존재 여부 확인
-    if len(response['tags']) == 0:
-        cw_lg_tag_list = '-'
-    else:
-        cw_lg_tag_list = []
-        
-        for tag_key, tag_value in response['tags'].items():
-            cw_lg_tag_list.append(f"{tag_key} : {tag_value}")
+    cw_lg_tag = convert.dic_tag_info(response['tags'])
 
-        cw_lg_tag_list = '\n'.join(cw_lg_tag_list)
-
-    return cw_lg_tag_list
+    return cw_lg_tag
 
 
 def convert_retention_day(retention_days):
@@ -59,7 +52,7 @@ def export_cw_logs_info_to_excel(workbook, cw_logs_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(cw_log_group_headers))}{header_row}"
 
     for cw_logs_info in paginator.paginate():
-        for cw_log in cw_logs_info['logGroups']:
+        for cw_log in tqdm(cw_logs_info['logGroups'], desc="CW Log 정보 파싱 중..."):
             cw_lg_name = cw_log['logGroupName']
             
             # 암호화 여부 확인

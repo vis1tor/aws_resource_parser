@@ -1,4 +1,5 @@
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -183,7 +184,7 @@ def export_elb_info_to_excel(workbook, elbv2_client, ec2_client):
     # auto_filter 적용
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(elb_headers))}{header_row}"
 
-    for elb in elb_info['LoadBalancers']:
+    for elb in tqdm(elb_info['LoadBalancers'], desc="ELB 정보 파싱 중..."):
         elb_name = elb['LoadBalancerName']
         elb_arn = elb['LoadBalancerArn']
         elb_type = elb['Type']

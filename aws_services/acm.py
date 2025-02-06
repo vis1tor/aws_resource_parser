@@ -1,4 +1,5 @@
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -55,7 +56,7 @@ def export_acm_info_to_excel(workbook, acm_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(acm_headers))}{header_row}"
 
     # ACM 정보 조회
-    for acm in acm_info['CertificateSummaryList']:
+    for acm in tqdm(acm_info['CertificateSummaryList'], desc="ACM 정보 파싱 중..."):
         acm_arn = acm['CertificateArn']
         acm_name, acm_tag = get_certificate_tag(acm_client, acm_arn)
         acm_type, acm_domain, acm_sub_domain, acm_key_algorithm, acm_issuer = get_certificate_info(acm_client, acm_arn)

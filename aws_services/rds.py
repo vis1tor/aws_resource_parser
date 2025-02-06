@@ -1,5 +1,6 @@
 # 시작 템플릿 추가 필요
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -55,7 +56,7 @@ def export_rds_info_to_excel(workbook, rds_client, ec2_client):
     # auto_filter 적용
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(rds_instance_headers))}{header_row}"
 
-    for rds_instance in rds_instance_list['DBInstances']:
+    for rds_instance in tqdm(rds_instance_list['DBInstances'], desc="RDS 정보 파싱 중..."):
         # RDS 기본 정보
         rds_instance_name = rds_instance['DBInstanceIdentifier']
         rds_instance_class = rds_instance['DBInstanceClass']

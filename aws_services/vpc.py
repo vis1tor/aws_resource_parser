@@ -1,5 +1,6 @@
 # 시작 템플릿 추가 필요
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -63,7 +64,7 @@ def export_vpc_info_to_excel(workbook, ec2_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(vpc_headers))}{header_row}"
 
     # VPC 정보 조회
-    for vpc in vpc_info['Vpcs']:
+    for vpc in tqdm(vpc_info['Vpcs'], desc="VPC 정보 파싱 중..."):
         vpc_name = convert.name_tag_info(vpc['Tags'])
         vpc_id = vpc['VpcId']
         vpc_main_cidr = vpc['CidrBlock']

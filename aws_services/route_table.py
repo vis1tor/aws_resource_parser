@@ -1,5 +1,6 @@
 # 시작 템플릿 추가 필요
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -33,7 +34,7 @@ def export_rt_info_to_excel(workbook, ec2_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(rt_headers))}{header_row}"
 
     # Routing Table 정보 조회
-    for rt in rt_info['RouteTables']:
+    for rt in tqdm(rt_info['RouteTables'], desc="Routing Table 정보 파싱 중..."):
         rt_name = convert.name_tag_info(rt['Tags'])
         rt_id = rt['RouteTableId'] 
         rt_vpc = convert.vpc_info(ec2_client, rt['VpcId'])

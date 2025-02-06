@@ -1,4 +1,5 @@
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
 def export_route53_info_to_excel(workbook, route53_client):
@@ -28,7 +29,7 @@ def export_route53_info_to_excel(workbook, route53_client):
     # auto_filter 적용
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(route53_headers))}{header_row}"
 
-    for hosted_zone in route53_list['HostedZones']:
+    for hosted_zone in tqdm(route53_list['HostedZones'], desc="Route53 정보 파싱 중..."):
 
         zone_name = hosted_zone['Name'][:-1]
         zone_record_info = route53_client.list_resource_record_sets(HostedZoneId=hosted_zone['Id'])

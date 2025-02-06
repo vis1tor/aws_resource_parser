@@ -1,4 +1,5 @@
 from botocore.exceptions import ClientError
+from tqdm import tqdm
 from conf import convert
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
@@ -68,7 +69,7 @@ def export_redis_info_to_excel(workbook, redis_client, ec2_client):
     # auto_filter 적용
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(redis_headers))}{header_row}"
     
-    for redis_list in redis_info['CacheClusters']:
+    for redis_list in tqdm(redis_info['CacheClusters'], desc="Redis 정보 파싱 중..."):
         redis_arn = redis_list['ARN']
         redis_name = redis_list['CacheClusterId']
         redis_type = redis_list['CacheNodeType']

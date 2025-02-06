@@ -1,21 +1,14 @@
 from botocore.exceptions import ClientError
+from conf import convert
+from tqdm import tqdm
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
 
 def get_sns_topic_tags(sns_client, sns_arn):
     response = sns_client.list_tags_for_resource(ResourceArn=sns_arn)
     
-    sns_topic_tag_list = []
-
-    # SNS 태그 미존재 시 예외 처리
-    if len(response['Tags']) == 0:
-        sns_topic_tag_list = '-'
-    else:
-        for tag in response['Tags']:
-            sns_topic_tag_list.append(f"{tag['Key']} : {tag['Value']}")
-        
-        sns_topic_tag_list = '\n'.join(sns_topic_tag_list)
+    sns_topic_tag = convert.tag_info(response['Tags'])
     
-    return sns_topic_tag_list
+    return sns_topic_tag
 
 def get_sns_topic_attributes(sns_client, sns_arn):
     response = sns_client.get_topic_attributes(TopicArn=sns_arn)
@@ -57,13 +50,13 @@ def export_sns_info_to_excel(workbook, sns_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(sns_headers))}{header_row}"
 
 
-    for sns_arn in sns_info['Topics']:
+    for sns_arn in tqdm(sns_info['Topics'], desc="SNS 정보 파싱 중..."):
         sns_topic_name, sns_topic_arn, sns_topic_kms_id = get_sns_topic_attributes(sns_client, sns_arn['TopicArn'])
-        sns_tags = get_sns_topic_tags(sns_client, sns_arn['TopicArn'])
+        sns_topic_tag = get_sns_topic_tags(sns_client, sns_arn['TopicArn'])
         
         variables = [
             # EC2 기본 정보
-            sns_topic_name, sns_topic_arn, sns_topic_kms_id, sns_tags
+            sns_topic_name, sns_topic_arn, sns_topic_kms_id, sns_topic_tag
         ]
 
         worksheet.append(variables)

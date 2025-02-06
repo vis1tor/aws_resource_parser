@@ -1,19 +1,13 @@
 from conf.sheet_style import front_header_font,header_font,header_fill,header_alignment,content_alignment,multiple_content_alignment,content_border,header_border
+from conf import convert
+from tqdm import tqdm
 
-def get_ecr_tags(ecr_client, repositoryArn):
+def get_ecr_tag(ecr_client, repositoryArn):
     response = ecr_client.list_tags_for_resource(resourceArn=repositoryArn)
-    ecr_tag_list = []
+    
+    ecr_tag = convert.tag_info(response['tags'])
 
-    # ECR 태그 미존재 시 예외 처리
-    if len(response['tags']) == 0:
-        ecr_tag_list = '-'
-    else:
-        for tag in response['tags']:
-            ecr_tag_list.append(f"{tag['Key']} : {tag['Value']}")
-
-        ecr_tag_list = '\n'.join(ecr_tag_list)
-
-    return ecr_tag_list
+    return ecr_tag
 
 
 def export_ecr_info_to_excel(workbook, private_ecr_client, public_ecr_client):
@@ -42,13 +36,13 @@ def export_ecr_info_to_excel(workbook, private_ecr_client, public_ecr_client):
     worksheet.auto_filter.ref = f"A{header_row}:{chr(64 + len(private_ecr_headers))}{header_row}"
 
     # Private ECR 정보를 엑셀에 쓰기
-    for repo in private_ecr_info['repositories']:
+    for repo in tqdm(private_ecr_info['repositories'], desc="ECR 정보 파싱 중..."):
         repository_name = repo['repositoryName']
         repository_uri = repo['repositoryUri']
         repository_immutability = repo['imageTagMutability']
         repository_imagescan = repo['imageScanningConfiguration']['scanOnPush']
         repository_enc_type = repo['encryptionConfiguration']['encryptionType']
-        repository_tags = get_ecr_tags(private_ecr_client, repo['repositoryArn'])
+        repository_tag = get_ecr_tag(private_ecr_client, repo['repositoryArn'])
 
         # AES256 일때 kmsKey 예외처리
         if not repo['encryptionConfiguration']['encryptionType'] == 'KMS':
@@ -59,7 +53,7 @@ def export_ecr_info_to_excel(workbook, private_ecr_client, public_ecr_client):
         # 시트에 데이터 쓰기
         # repository_imagescan 값은 bool 이라 str으로 변환해야 바로 아래 for 반복에서 에러 발생 안함.
         variables = [
-            repository_name, repository_uri, repository_immutability, str(repository_imagescan), repository_enc_type, repository_enc_key, repository_tags
+            repository_name, repository_uri, repository_immutability, str(repository_imagescan), repository_enc_type, repository_enc_key, repository_tag
         ]
         
         worksheet.append(variables)
@@ -77,7 +71,7 @@ def export_ecr_info_to_excel(workbook, private_ecr_client, public_ecr_client):
                 cell.border = content_border
 
 
-    # Private ECR 열 정보 추가
+    # Public ECR 열 정보 추가
     worksheet.append([None])
     worksheet.append(['Public ECR'])
     max_row = worksheet.max_row
@@ -94,7 +88,7 @@ def export_ecr_info_to_excel(workbook, private_ecr_client, public_ecr_client):
     for repo in public_ecr_info['repositories']:
         repository_name = repo['repositoryName']
         repository_uri = repo['repositoryUri']
-        repository_tags = get_ecr_tags(public_ecr_client, repo['repositoryArn'])
+        repository_tag = get_ecr_tag(public_ecr_client, repo['repositoryArn'])
         
         # 시트에 데이터 쓰기
-        worksheet.append([repository_name, repository_uri, repository_tags])
+        worksheet.append([repository_name, repository_uri, repository_tag])
