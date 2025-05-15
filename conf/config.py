@@ -4,7 +4,7 @@ AWS_SECRET_ACCESS_KEY=""
 AWS_SESSION_TOKEN="" # 생략 가능 
 
 # AWS 리전 설정
-REGION = 'ap-northeast-2'
+REGION = 'ap-northeast-2' #
 
 # Output 파일명 설정(ex) ./output/aws_service.xlsx)
 OUTPUT_FILE_NAME = 'aws_service.xlsx'
@@ -14,9 +14,9 @@ aws_services = {
     # 주랭이
     # 'ec2' : 'on',
     # 'sg' : 'on', # Security Groups
-    # 'elb' : 'on', # gatewaylb 작업 추가 필요
+    'elb' : 'on', # gatewaylb 작업 추가 필요
     # 'eks' : 'on',
-    'ecr' : 'on',
+    # 'ecr' : 'on',
     # 'lambda' : 'on',
     # 초랭이
     # 's3' : 'on',
